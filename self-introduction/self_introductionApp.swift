@@ -1,17 +1,18 @@
-//
-//  self_introductionApp.swift
-//  self-introduction
-//
-//  Created by 黒本誉隆 on 2025/05/12.
-//
-
 import SwiftUI
+import Supabase
 
 @main
 struct self_introductionApp: App {
+    @StateObject private var authVM = AuthViewModel()
+    @StateObject private var scenarioVM = ScenarioListViewModel()
+    @StateObject private var quotaVM = QuotaViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environmentObject(authVM)
+                .environmentObject(scenarioVM)
+                .environmentObject(quotaVM)
         }
     }
 }
