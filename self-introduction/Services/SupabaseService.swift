@@ -19,12 +19,13 @@ final class SupabaseService {
 
     // Scenario Fetch (library ≥1.1)
     func fetchScenarios() async throws -> [Scenario] {
-        try await client.database
+        try await client
             .from("SCENARIOS")
             .select()
             .execute()
             .value
     }
+
 
     // Generation persistence
     func saveGeneration(_ generation: Generation) async {
