@@ -11,13 +11,18 @@ final class SupabaseService {
         return SupabaseClient(supabaseURL: url, supabaseKey: key)
     }()
 
-    // Auth
-    func signInWithApple() async throws {
-        try await client.auth.signInWithIdToken(credentials: .init(provider: .apple, idToken: ""))
-    }
     func getUser() -> User? { client.auth.currentUser }
 
-    // Scenario Fetch (library ≥1.1)
+    // ---------------- Email 認証 ----------------
+    func signUpEmail(email: String, password: String) async throws {
+        _ = try await client.auth.signUp(email: email, password: password)
+    }
+
+    func signInEmail(email: String, password: String) async throws {
+        _ = try await client.auth.signIn(email: email, password: password)
+    }
+
+    // ---------------- Scenario 取得 -------------
     func fetchScenarios() async throws -> [Scenario] {
         try await client
             .from("SCENARIOS")
@@ -26,9 +31,8 @@ final class SupabaseService {
             .value
     }
 
-
-    // Generation persistence
+    // ---------------- 生成履歴保存 -------------
     func saveGeneration(_ generation: Generation) async {
-        _ = try? await client.database.from("GENERATIONS").insert(generation).execute()
+        _ = try? await client.from("GENERATIONS").insert(generation).execute()
     }
 }
